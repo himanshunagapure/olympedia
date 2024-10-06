@@ -47,3 +47,20 @@ def fetch_medal_tally(df,year,country):
 
     return x
 
+def data_vs_time(df,col):
+    nations_vs_time = df.drop_duplicates(['Year',col])['Year'].value_counts().reset_index().sort_values('Year')
+    nations_vs_time.rename(columns = {'count' : col},inplace = True)
+    return nations_vs_time
+
+#Finding list of most successfull athletes
+def most_successful(df,sport):
+    temp_df = df.dropna(subset=['Medal']) #Remove athletes with no medals
+    
+    if sport != 'Overall':
+        temp_df = temp_df[temp_df['Sport']==sport]
+    
+    x = temp_df['Name'].value_counts().reset_index().head(15).merge(df, on='Name', how='left')[['Name','count','Sport','region']].drop_duplicates('Name')
+    x.rename(columns={'count' :'Medals'},inplace=True)
+    return x
+
+
