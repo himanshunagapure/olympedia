@@ -88,7 +88,7 @@ if user_menu == 'Overall Analysis':
     st.pyplot(fig)
     
     #Top 15 Most Successfull Athletes
-    st.title('Most Successfull Athletes')
+    st.title('Top 15 Successfull Athletes')
     #create filter
     sport_list = df['Sport'].unique().tolist()
     sport_list.sort()
@@ -97,3 +97,32 @@ if user_menu == 'Overall Analysis':
     selected_sport = st.selectbox('Select a Sport', sport_list)
     most_successfull = helper.most_successful(df,selected_sport)
     st.table(most_successfull)
+    
+if user_menu == 'Country-wise':
+    
+    st.sidebar.title('Country-wise Analysis')
+    
+    #Dropdown to select country
+    country_list = df['region'].dropna().unique().tolist()
+    country_list.sort()
+    
+    selected_country = st.sidebar.selectbox('Select Country', country_list)
+ 
+    #Line graph: Country's Medals over year
+    country_df = helper.yearwise_medal_tally(df,selected_country)
+    fig = px.line(country_df, x='Year', y='Medal')
+    st.title(selected_country + ' Medal Tally over the years')
+    st.plotly_chart(fig)
+    
+    #Heatmap: Medals in Events over the years
+    st.title(selected_country + ' Event Performance over the years')
+
+    pt = helper.country_event_heatmap(df, selected_country)
+    fig,ax = plt.subplots(figsize=(25,25))
+    ax = sns.heatmap(pt,annot=True)
+    st.pyplot(fig)
+    
+    #Top 10 Most Successfull Athletes of a country
+    st.title('Top 10 Athletes of '+selected_country)
+    top10_athletes = helper.top10_athletes_by_country(df,selected_country)
+    st.table(top10_athletes)

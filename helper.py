@@ -54,13 +54,57 @@ def data_vs_time(df,col):
 
 #Finding list of most successfull athletes
 def most_successful(df,sport):
-    temp_df = df.dropna(subset=['Medal']) #Remove athletes with no medals
+    # Remove athletes with no medals
+    temp_df = df.dropna(subset=['Medal'])
     
+    # Filter by sport if specified, otherwise keep all sports
     if sport != 'Overall':
-        temp_df = temp_df[temp_df['Sport']==sport]
+        temp_df = temp_df[temp_df['Sport'] == sport]
     
-    x = temp_df['Name'].value_counts().reset_index().head(15).merge(df, on='Name', how='left')[['Name','count','Sport','region']].drop_duplicates('Name')
-    x.rename(columns={'count' :'Medals'},inplace=True)
+    # Create a new column for total medals
+    temp_df['Total_Medals'] = temp_df['Gold'] + temp_df['Silver'] + temp_df['Bronze']
+
+    # Group by athlete name and sum their medals
+    athlete_medals = temp_df.groupby(['Name'])['Total_Medals'].sum().reset_index()
+    # Merge with original df to get 'Sport' and 'region' information
+    x = athlete_medals.merge(df[['Name', 'Sport', 'region']].drop_duplicates(), on='Name', how='left')
+
+    # Drop duplicate athlete entries to show unique athletes with their sports
+    x = x[['Name', 'Total_Medals', 'Sport', 'region']].drop_duplicates('Name')
+    # Sort athletes by total medals in descending order and get the top 15
+    x = x.sort_values(by='Total_Medals', ascending=False).head(15)
+    
     return x
 
+# Country-wise medal tally per year(lineplot)
+def yearwise_medal_tally(df,country):
+    temp_df = df.dropna(subset=['Medal'])
+    temp_df.drop_duplicates(subset=['Team','NOC','Year','City','Sport','Event','Medal'], inplace=True)    
+    new_temp_df = temp_df[temp_df['region'] == country]
+    final_temp_df = new_temp_df.groupby('Year').count()['Medal'].reset_index()
+    return final_temp_df
+
+def country_event_heatmap(df, country):
+    temp_df = df.dropna(subset=['Medal'])
+    temp_df.drop_duplicates(subset=['Team','NOC','Year','City','Sport','Event','Medal'], inplace=True)    
+    new_temp_df = temp_df[temp_df['region'] == country]
+    pt = new_temp_df.pivot_table(index='Sport',columns='Year',values='Medal',aggfunc='count').fillna(0).astype('int')
+    return pt
+
+#Top 10 most successfull athletes of a country
+def top10_athletes_by_country(df,country):
+    temp_df = df.dropna(subset=['Medal'])
+
+    # Filter for the specified country (e.g., 'USA')
+    temp_df = temp_df[temp_df['region'] == country]
+    
+    # Create a new column for total medals
+    temp_df['Total_Medals'] = temp_df['Gold'] + temp_df['Silver'] + temp_df['Bronze']
+    
+    # Group by athlete name and sum their medals
+    athlete_medals = temp_df.groupby(['Name','Sport'])['Total_Medals'].sum().reset_index()
+    
+    # Sort athletes by total medals in descending order and get the top 10
+    top_10_athletes = athlete_medals.sort_values(by='Total_Medals', ascending=False).head(10)
+    return top_10_athletes
 
