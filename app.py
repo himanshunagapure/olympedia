@@ -140,27 +140,25 @@ if user_menu == 'Overall Analysis':
     nations = df['region'].unique().shape[0]
     
     st.title("🔍 Quick Overview")
+    # First Row of Metrics
     col1,col2,col3 = st.columns(3)
     with col1:
-        st.header("🏅 Editions")
-        st.title(editions) 
+        st.metric(label="🏅 Editions", value=editions)
     with col2:
-        st.header("🌍 Hosts")
-        st.title(cities)
+        st.metric(label="🌍 Hosts", value=cities)
     with col3:
-        st.header("🤼‍♂️ Sports")
-        st.title(sports)
+        st.metric(label="🤼‍♂️ Sports", value=sports)
+
+    st.markdown("---")  # Horizontal Divider
         
-    col1,col2,col3 = st.columns(3)
+    # Second Row of Metrics
+    col1, col2, col3 = st.columns(3)
     with col1:
-        st.header("🎯 Events")
-        st.title(events) 
+        st.metric(label="🎯 Events", value=events)
     with col2:
-        st.header("🏳️ Nations")
-        st.title(nations)
+        st.metric(label="🏳️ Nations", value=nations)
     with col3:
-        st.header("👥 Athletes")
-        st.title(athletes)
+        st.metric(label="👥 Athletes", value=athletes)
     
     #Line Graphs    
     st.markdown("<hr>", unsafe_allow_html=True)

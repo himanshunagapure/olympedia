@@ -54,7 +54,10 @@ def fetch_medal_tally(df,year,country, sort_by='Total'):
             x = x.sort_values('Total', ascending=False).reset_index(drop=True)        
     
     x[['Gold', 'Silver', 'Bronze', 'Total']] = x[['Gold', 'Silver', 'Bronze', 'Total']].apply(lambda r: r.astype(int))
-
+    #Shows ranking from 1
+    x = x.reset_index(drop=True)
+    x.index = x.index + 1
+    
     return x
 
 def data_vs_time(df,col):
@@ -83,6 +86,9 @@ def most_successful(df,sport):
     x = x[['Name', 'Total_Medals', 'Sport', 'region']].drop_duplicates('Name')
     # Sort athletes by total medals in descending order and get the top 15
     x = x.sort_values(by='Total_Medals', ascending=False).head(15)
+    #Shows ranking from 1
+    x = x.reset_index(drop=True)
+    x.index = x.index + 1
     
     return x
 
@@ -116,5 +122,8 @@ def top10_athletes_by_country(df,country):
     
     # Sort athletes by total medals in descending order and get the top 10
     top_10_athletes = athlete_medals.sort_values(by='Total_Medals', ascending=False).head(10)
+    #Shows ranking from 1
+    top_10_athletes =top_10_athletes.reset_index(drop=True)
+    top_10_athletes.index =top_10_athletes.index + 1
     return top_10_athletes
 
