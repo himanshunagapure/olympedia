@@ -3,9 +3,10 @@ import numpy as np
 
 def medal_tally(df):
     medal_tally = df.drop_duplicates(subset=['Team','NOC','Year','City','Sport','Event','Medal', 'region'])
-    medal_tally = medal_tally.groupby('region').sum()[['Gold','Silver','Bronze']].sort_values('Gold', ascending=False).reset_index()
+    medal_tally = medal_tally.groupby('region').sum()[['Gold','Silver','Bronze']]
     medal_tally['Total'] = medal_tally['Gold'] + medal_tally['Silver'] + medal_tally['Bronze']
-    
+    # Sort the medal tally by 'Total' in descending order
+    medal_tally = medal_tally.sort_values('Total', ascending=False).reset_index()
     medal_tally[['Gold', 'Silver', 'Bronze', 'Total']] = medal_tally[['Gold', 'Silver', 'Bronze', 'Total']].apply(lambda x: x.astype(int))
     
     return medal_tally
@@ -24,7 +25,7 @@ def country_year_list(df):
     return years,country
 
 #Functions which accepts year and country
-def fetch_medal_tally(df,year,country):
+def fetch_medal_tally(df,year,country, sort_by='Total'):
     medal_df = df.drop_duplicates(subset=['Team','NOC','Year','City','Sport','Event','Medal', 'region'])
     flag = 0
     if year == 'Overall' and country == 'Overall':
@@ -39,10 +40,19 @@ def fetch_medal_tally(df,year,country):
 
     if flag == 1:
         x = temp_df.groupby('Year').sum()[['Gold','Silver','Bronze']].sort_values('Year').reset_index()
+        x['Total'] = x['Gold'] + x['Silver'] + x['Bronze']
+        x = x.sort_values('Year', ascending=True).reset_index(drop=True)
+            
     else:
-        x = temp_df.groupby('region').sum()[['Gold','Silver','Bronze']].sort_values('Gold', ascending=False).reset_index()
-    x['Total'] = x['Gold'] + x['Silver'] + x['Bronze']
-
+        x = temp_df.groupby('region').sum()[['Gold','Silver','Bronze']].reset_index()
+        x['Total'] = x['Gold'] + x['Silver'] + x['Bronze']
+        # Sort by user-selected sort criteria
+        if sort_by in ['Gold', 'Silver', 'Bronze', 'Total']:
+            x = x.sort_values(sort_by, ascending=False).reset_index(drop=True)
+        else:
+            # Default to 'Total' if invalid sort_by value
+            x = x.sort_values('Total', ascending=False).reset_index(drop=True)        
+    
     x[['Gold', 'Silver', 'Bronze', 'Total']] = x[['Gold', 'Silver', 'Bronze', 'Total']].apply(lambda r: r.astype(int))
 
     return x
