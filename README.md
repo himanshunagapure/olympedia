@@ -1,6 +1,8 @@
 # Olympic Data Analytics Project (Summer Olympics 2024)
 This project is a comprehensive data analytics web application for the Summer Olympics, utilizing up-to-date data until 2024. It provides insights and analysis through various modules that allow users to explore the history and performance of countries, athletes, and sports in the Summer Olympics.
 
+Check the app : https://olympedia.streamlit.app/
+
 ## Features
 The application is divided into three main modules:
 
