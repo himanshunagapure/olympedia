@@ -1,13 +1,13 @@
 import streamlit as st
 import pandas as pd
-import preprocessor,helper
+from modules import preprocessor, helper
 import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
 
 # Import styling functions
-import styling
+from modules import styling
 
 # Set page configuration
 st.set_page_config(
@@ -18,15 +18,15 @@ st.set_page_config(
 )
 
 # Load custom CSS
-styling.load_css("styles.css") 
+styling.load_css("static/styles.css") 
 
 # Define Olympic Colors
 cool_palette = ['#EDF8FB', '#B3CDE3', '#8C96C6', '#8856A7', '#810F7C']
 custom_cmap = LinearSegmentedColormap.from_list('olympic_cmap', cool_palette, N=100)
 
 # Load and preprocess data
-df = pd.read_csv('olympics_dataset.csv')
-regions_df = pd.read_csv('noc_regions.csv')
+df = pd.read_csv('data/olympics_dataset.csv')
+regions_df = pd.read_csv('data/noc_regions.csv')
 df = preprocessor.preprocess(df, regions_df)
 
 # Setting up Sidebar

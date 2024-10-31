@@ -8,7 +8,7 @@ The application is divided into three main modules:
 
 ## 1. Medal Tally
 View medal counts by year and country.
-Filter by specific years and countries to see the performance over time or for specific editions of the Olympics.
+Filter by specific years, specific country, or sort by medals to see the performance over time or for specific editions of the Olympics.
 
 ## 2. Overall Analysis
 Get an overview of Olympic history with metrics such as the total number of editions, participating nations, sports, events, and athletes.
