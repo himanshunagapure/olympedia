@@ -27,6 +27,7 @@ The application is divided into three main modules:
 - Streamlit: Web application framework.
 - Plotly & Seaborn: Visualization libraries for interactive and aesthetic charts.
 - Pandas: Data manipulation and cleaning.
+- AWS EC2: Used for deployment
 
 ## Project Features
 - Up-to-date Data: Includes data through the 2024 Summer Olympics, ensuring an up-to-date resource for recent Olympic records.
