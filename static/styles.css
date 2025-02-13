@@ -1,26 +1,52 @@
+/* Base styles */
 body {
-    background-color: #f0f2f6;
-    font-family: 'Arial', sans-serif;
-}
-h1, h2, h3, h4, h5, h6 {
-    color: #333333;
-}
-.stButton>button {
-    color: white;
-    background-color: #FF5733;
-    border-radius: 5px;
-    padding: 10px 20px;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #2c3e50;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Style for tables */
+/* Table styling */
 table {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.95); /* Slightly more opaque background */
+    color: #000; /* Black text for contrast */
     border-collapse: collapse;
     width: 100%;
+    border: 2px solid #1a237e; /* Dark blue border */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    
 }
 
 th, td {
-    border: 1px solid #dddddd;
+    padding: 12px;
     text-align: center;
-    padding: 8px;
+    border-bottom: 1px solid #ddd; /* Light gray border */
+}
+
+th {
+    background-color: #f7f7f7; /* Dark blue */
+    color: white;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Alternating row colors for better readability */
+tr:nth-child(even) td {
+    background-color: #f7f7f7;
+}
+
+tr:hover td {
+    background-color: #e3f2fd;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .main {
+        padding: 1rem;
+    }
+    .dataframe {
+        font-size: 0.9rem;
+    }
 }

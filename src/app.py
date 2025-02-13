@@ -5,6 +5,8 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
+import requests
+import warnings
 
 # Import styling functions
 from modules import styling
@@ -24,6 +26,27 @@ styling.load_css("static/styles.css")
 cool_palette = ['#EDF8FB', '#B3CDE3', '#8C96C6', '#8856A7', '#810F7C']
 custom_cmap = LinearSegmentedColormap.from_list('olympic_cmap', cool_palette, N=100)
 
+def set_background():
+    background_image = "https://img.freepik.com/free-vector/abstract-wave-lines-background-composition-vector-illustration_460848-11899.jpg?ga=GA1.1.1423642.1739454377&semt=ais_hybrid"
+    # Security check: Verify if the image URL is accessible
+    try:
+        response = requests.get(background_image, timeout=5)  # Set timeout to avoid long waits
+        if response.status_code == 200:  # Ensure the image is reachable
+            st.markdown(f"""
+                <style>
+                .stApp {{
+                    background-image: url({background_image});
+                    background-attachment: fixed;
+                    background-size: cover;
+                }}
+                .css-18e3th9 {{ font-family: 'Arial', sans-serif; }}
+                </style>
+            """, unsafe_allow_html=True)
+        else:
+            warnings.warn("Background image could not be loaded. Using default background.", stacklevel=2)
+    except requests.exceptions.RequestException:
+        warnings.warn("Failed to fetch background image. Using default background.")
+
 # Load and preprocess data
 df = pd.read_csv('data/olympics_dataset.csv')
 regions_df = pd.read_csv('data/noc_regions.csv')
@@ -41,6 +64,7 @@ def set_title(title):
     st.markdown(f"<h1 style='text-align: center; color: #FF5733;'>{title}</h1>", unsafe_allow_html=True)
     
 if user_menu == 'Medal Tally':
+    set_background()
     st.sidebar.header("Medal Tally")
     years,country = helper.country_year_list(df)
     selected_year = st.sidebar.selectbox('Select Year',years)
@@ -159,7 +183,7 @@ if user_menu == 'Overall Analysis':
         st.metric(label="🏳️ Nations", value=nations)
     with col3:
         st.metric(label="👥 Athletes", value=athletes)
-    
+
     #Line Graphs    
     st.markdown("<hr>", unsafe_allow_html=True)
     nations_vs_time = helper.data_vs_time(df,'region')
