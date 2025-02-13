@@ -27,7 +27,7 @@ cool_palette = ['#EDF8FB', '#B3CDE3', '#8C96C6', '#8856A7', '#810F7C']
 custom_cmap = LinearSegmentedColormap.from_list('olympic_cmap', cool_palette, N=100)
 
 def set_background():
-    background_image = "https://img.freepik.com/free-vector/abstract-wave-lines-background-composition-vector-illustration_460848-11899.jpg?ga=GA1.1.1423642.1739454377&semt=ais_hybrid"
+    background_image = "https://raw.githubusercontent.com/himanshunagapure/olympedia/refs/heads/main/assets/bg.jpg"
     # Security check: Verify if the image URL is accessible
     try:
         response = requests.get(background_image, timeout=5)  # Set timeout to avoid long waits
